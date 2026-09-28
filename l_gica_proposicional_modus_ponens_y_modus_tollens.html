@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprende Lógica: Modus Ponens y Modus Tollens</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        },
+                        tollens: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .symbol-badge {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="gradient-header text-white border-b border-slate-700 sticky top-0 z-50 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-indigo-600 rounded-lg text-white">
+                    <i class="fa-solid fa-[#fa-brain] fa-brain text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Lógica Proposicional</h1>
+                    <p class="text-xs text-slate-300">Aprende y practica reglas de inferencia formal</p>
+                </div>
+            </div>
+            <!-- Navigation -->
+            <nav class="flex space-x-1 bg-slate-800 p-1.5 rounded-xl border border-slate-700 text-sm">
+                <button onclick="scrollToSection('teoria')" class="px-4 py-2 rounded-lg font-medium text-slate-200 hover:bg-slate-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-book-open mr-1.5"></i>Teoría
+                </button>
+                <button onclick="scrollToSection('ejemplos')" class="px-4 py-2 rounded-lg font-medium text-slate-200 hover:bg-slate-700 hover:text-white transition-colors">
+                    <i class="fa-solid fa-list-check mr-1.5"></i>Ejemplos (10)
+                </button>
+                <button onclick="scrollToSection('ejercicios')" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-500 transition-colors shadow">
+                    <i class="fa-solid fa-pen-to-square mr-1.5"></i>Ejercicios (10)
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Theory Section -->
+        <section id="teoria" class="scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <span class="text-indigo-600 bg-indigo-50 font-semibold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Fundamentos de Lógica</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2">Reglas Principales de Inferencia</h2>
+                <p class="text-slate-600 mt-2 text-base">
+                    El <strong class="text-indigo-700">Modus Ponens</strong> y el <strong class="text-indigo-700">Modus Tollens</strong> son dos formas válidas de argumento deductivo fundamentadas en implicaciones formales ($P \rightarrow Q$).
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Modus Ponens Card -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-emerald-100 shadow-sm relative overflow-hidden card-hover">
+                    <div class="absolute top-0 right-0 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        AFIRMANDO AFIRMO
+                    </div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">
+                            MP
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900">Modus Ponens</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+                        Significa "método que afirma". Si una condición es verdadera y la condición inicial ocurre, entonces el resultado debe ocurrir necesariamente.
+                    </p>
+                    
+                    <!-- Formula Box -->
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4 font-mono text-slate-800 text-sm">
+                        <div class="flex justify-between border-b border-emerald-200 pb-2 mb-2">
+                            <span class="text-slate-500">Premisa 1 (Implicación):</span>
+                            <span class="font-bold text-emerald-800">P → Q</span>
+                        </div>
+                        <div class="flex justify-between border-b border-emerald-200 pb-2 mb-2">
+                            <span class="text-slate-500">Premisa 2 (Afirmación del antecedente):</span>
+                            <span class="font-bold text-emerald-800">P</span>
+                        </div>
+                        <div class="flex justify-between pt-1 text-base font-bold text-emerald-900">
+                            <span>Conclusión:</span>
+                            <span>∴ Q</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>
+                        <strong>Regla clave:</strong> Afirmas el antecedente ($P$), por lo que obtienes el consecuente ($Q$).
+                    </div>
+                </div>
+
+                <!-- Modus Tollens Card -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-rose-100 shadow-sm relative overflow-hidden card-hover">
+                    <div class="absolute top-0 right-0 bg-rose-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        NEGANDO NIEGO
+                    </div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-lg">
+                            MT
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900">Modus Tollens</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+                        Significa "método que niega". Si sabemos que el consecuente NO ocurrió, deducimos que el antecedente tampoco pudo haber ocurrido.
+                    </p>
+
+                    <!-- Formula Box -->
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-4 mb-4 font-mono text-slate-800 text-sm">
+                        <div class="flex justify-between border-b border-rose-200 pb-2 mb-2">
+                            <span class="text-slate-500">Premisa 1 (Implicación):</span>
+                            <span class="font-bold text-rose-800">P → Q</span>
+                        </div>
+                        <div class="flex justify-between border-b border-rose-200 pb-2 mb-2">
+                            <span class="text-slate-500">Premisa 2 (Negación del consecuente):</span>
+                            <span class="font-bold text-rose-800">¬Q (No Q)</span>
+                        </div>
+                        <div class="flex justify-between pt-1 text-base font-bold text-rose-900">
+                            <span>Conclusión:</span>
+                            <span>∴ ¬P (No P)</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>
+                        <strong>Regla clave:</strong> Niegas el consecuente ($Q$), por lo que concluyes la negación del antecedente ($P$).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="ejemplos" class="scroll-mt-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 border-b border-slate-200 pb-4">
+                <div>
+                    <span class="text-indigo-600 bg-indigo-50 font-semibold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Demostración Paso a Paso</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mt-2">10 Ejemplos Resueltos</h2>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 md:mt-0">5 Ejemplos de Modus Ponens + 5 Ejemplos de Modus Tollens</p>
+            </div>
+
+            <!-- Filter Tabs for Examples -->
+            <div class="flex space-x-2 mb-6">
+                <button onclick="filterExamples('all')" id="btn-ex-all" class="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition">Todos (10)</button>
+                <button onclick="filterExamples('mp')" id="btn-ex-mp" class="px-4 py-2 text-sm font-medium rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition">Solo Modus Ponens</button>
+                <button onclick="filterExamples('mt')" id="btn-ex-mt" class="px-4 py-2 text-sm font-medium rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition">Solo Modus Tollens</button>
+            </div>
+
+            <!-- Grid of Examples -->
+            <div id="examples-container" class="grid md:grid-cols-2 gap-6">
+                <!-- Javascript will inject 10 examples here -->
+            </div>
+        </section>
+
+        <!-- Exercises Section -->
+        <section id="ejercicios" class="scroll-mt-24">
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl">
+                
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-6 mb-8 gap-4">
+                    <div>
+                        <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Prueba Práctica</span>
+                        <h2 class="text-3xl font-extrabold mt-2">10 Ejercicios Interativos</h2>
+                        <p class="text-slate-400 text-sm mt-1">Evalúa tu comprensión seleccionando la respuesta correcta en cada caso.</p>
+                    </div>
+
+                    <!-- Score Card -->
+                    <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 flex items-center space-x-4 min-w-[200px]">
+                        <div class="text-3xl text-amber-400">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Puntuación</div>
+                            <div class="text-2xl font-bold"><span id="score-val">0</span> / 10</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Progress Bar -->
+                <div class="mb-8">
+                    <div class="flex justify-between text-xs text-slate-400 mb-2">
+                        <span>Progreso del test</span>
+                        <span id="quiz-progress-text">Resueltos: 0/10</span>
+                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                        <div id="quiz-progress-bar" class="bg-indigo-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Cards Container -->
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Javascript will render quiz questions here -->
+                </div>
+
+                <!-- Quiz Reset / Summary Button -->
+                <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center flex-wrap gap-4">
+                    <button onclick="resetQuiz()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-semibold text-sm border border-slate-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Reiniciar Ejercicios
+                    </button>
+                    <div id="quiz-feedback-banner" class="hidden text-emerald-400 text-sm font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-base"></i> ¡Has completado todos los ejercicios!
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 text-sm py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
+            <p class="font-medium text-slate-300">Plataforma Interactiva de Lógica Simbólica</p>
+            <p class="text-xs text-slate-500">Diseñado para la enseñanza didáctica de Modus Ponendo Ponens y Modus Tollendo Tollens.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data for 10 Resolved Examples
+        const examplesData = [
+            // Modus Ponens Examples (1-5)
+            {
+                type: 'mp',
+                title: 'Ejemplo 1: Clima y Lluvia',
+                p: 'P: Está lloviendo.',
+                q: 'Q: El suelo está mojado.',
+                rule: 'Modus Ponens (MP)',
+                premise1: 'Si está lloviendo, entonces el suelo está mojado. (P → Q)',
+                premise2: 'Está lloviendo. (P)',
+                conclusion: 'Por lo tanto, el suelo está mojado. (∴ Q)',
+                explanation: 'Como se afirma el antecedente (está lloviendo), aplicamos Modus Ponens para afirmar de forma válida el consecuente (el suelo está mojado).'
+            },
+            {
+                type: 'mp',
+                title: 'Ejemplo 2: Estudio y Examen',
+                p: 'P: Estudias diariamente.',
+                q: 'Q: Apruebas el examen de lógica.',
+                rule: 'Modus Ponens (MP)',
+                premise1: 'Si estudias diariamente, apruebas el examen de lógica. (P → Q)',
+                premise2: 'Estudias diariamente. (P)',
+                conclusion: 'Por lo tanto, apruebas el examen de lógica. (∴ Q)',
+                explanation: 'Se verifica que la condición inicial (estudiar) se cumple, por lo tanto el resultado deducido es la aprobación.'
+            },
+            {
+                type: 'mp',
+                title: 'Ejemplo 3: Programación y Software',
+                p: 'P: Hay un error sintáctico en el código.',
+                q: 'Q: El programa no compilará.',
+                rule: 'Modus Ponens (MP)',
+                premise1: 'Si hay un error sintáctico en el código, el programa no compilará. (P → Q)',
+                premise2: 'Hay un error sintáctico en el código. (P)',
+                conclusion: 'Por lo tanto, el programa no compilará. (∴ Q)',
+                explanation: 'Al confirmarse el fallo en el código, la regla nos exige aceptar la conclusión de que la compilación fallará.'
+            },
+            {
+                type: 'mp',
+                title: 'Ejemplo 4: Botánica',
+                p: 'P: Una planta recibe suficiente luz solar y agua.',
+                q: 'Q: La planta realiza la fotosíntesis.',
+                rule: 'Modus Ponens (MP)',
+                premise1: 'Si una planta recibe luz solar y agua, realiza la fotosíntesis. (P → Q)',
+                premise2: 'La planta recibe suficiente luz solar y agua. (P)',
+                conclusion: 'Por lo tanto, la planta realiza la fotosíntesis. (∴ Q)',
+                explanation: 'La condición biológica requerida está presente, por lo que se deduce lógicamente la realización de la fotosíntesis.'
+            },
+            {
+                type: 'mp',
+                title: 'Ejemplo 5: Geometría',
+                p: 'P: Una figura es un cuadrado.',
+                q: 'Q: La figura tiene 4 lados iguales.',
+                rule: 'Modus Ponens (MP)',
+                premise1: 'Si una figura es un cuadrado, entonces tiene 4 lados iguales. (P → Q)',
+                premise2: 'La figura X es un cuadrado. (P)',
+                conclusion: 'Por lo tanto, la figura X tiene 4 lados iguales. (∴ Q)',
+                explanation: 'Dada la definición y afirmación de la propiedad geométrica base, la conclusión sobre sus lados se cumple deductivamente.'
+            },
+
+            // Modus Tollens Examples (6-10)
+            {
+                type: 'mt',
+                title: 'Ejemplo 6: Fuego y Humo',
+                p: 'P: Hay fuego en el bosque.',
+                q: 'Q: Hay humo visible.',
+                rule: 'Modus Tollens (MT)',
+                premise1: 'Si hay fuego en el bosque, entonces hay humo visible. (P → Q)',
+                premise2: 'No hay humo visible. (¬Q)',
+                conclusion: 'Por lo tanto, no hay fuego en el bosque. (∴ ¬P)',
+                explanation: 'Al negar el consecuente (no hay humo), Modus Tollens nos permite negar válidamente el antecedente (no hay fuego).'
+            },
+            {
+                type: 'mt',
+                title: 'Ejemplo 7: Electricidad',
+                p: 'P: El interruptor está encendido.',
+                q: 'Q: La bombilla está encendida.',
+                rule: 'Modus Tollens (MT)',
+                premise1: 'Si el interruptor está encendido, la bombilla está encendida. (P → Q)',
+                premise2: 'La bombilla no está encendida. (¬Q)',
+                conclusion: 'Por lo tanto, el interruptor no está encendido. (∴ ¬P)',
+                explanation: 'La falta de luz (efecto) garantiza que la causa condicional (interruptor en ON) tampoco se ha producido.'
+            },
+            {
+                type: 'mt',
+                title: 'Ejemplo 8: Medicina',
+                p: 'P: El paciente tiene gripe.',
+                q: 'Q: El paciente tiene fiebre.',
+                rule: 'Modus Tollens (MT)',
+                premise1: 'Si el paciente tiene gripe, entonces presenta fiebre. (P → Q)',
+                premise2: 'El paciente no presenta fiebre. (¬Q)',
+                conclusion: 'Por lo tanto, el paciente no tiene gripe. (∴ ¬P)',
+                explanation: 'Negar la presencia del síntoma obligatorio nos permite descartar con certeza lógica la enfermedad condicional.'
+            },
+            {
+                type: 'mt',
+                title: 'Ejemplo 9: Leyes y Conducción',
+                p: 'P: Tienes más de 18 años.',
+                q: 'Q: Puedes obtener una licencia legal de conducir.',
+                rule: 'Modus Tollens (MT)',
+                premise1: 'Si tienes más de 18 años, puedes obtener una licencia legal. (P → Q)',
+                premise2: 'No puedes obtener una licencia legal. (¬Q)',
+                conclusion: 'Por lo tanto, no tienes más de 18 años. (∴ ¬P)',
+                explanation: 'La imposibilidad del resultado (licencia) implica la ausencia de la premisa de edad requerida.'
+            },
+            {
+                type: 'mt',
+                title: 'Ejemplo 10: Finanzas',
+                p: 'P: Se realizó una transferencia bancaria.',
+                q: 'Q: El saldo de la cuenta disminuye.',
+                rule: 'Modus Tollens (MT)',
+                premise1: 'Si se realiza una transferencia, el saldo de la cuenta disminuye. (P → Q)',
+                premise2: 'El saldo de la cuenta no ha disminuido. (¬Q)',
+                conclusion: 'Por lo tanto, no se realizó ninguna transferencia. (∴ ¬P)',
+                explanation: 'Como la consecuencia en la cuenta no ha ocurrido, se concluye que el hecho inicial no tuvo lugar.'
+            }
+        ];
+
+        // Data for 10 Interactive Quiz Exercises
+        const quizData = [
+            {
+                id: 1,
+                ruleType: 'Modus Ponens',
+                premise1: 'Si una persona es ciudadano mayor de edad, tiene derecho a votar.',
+                premise2: 'Carlos es un ciudadano mayor de edad.',
+                options: [
+                    'Carlos no tiene derecho a votar.',
+                    'Carlos tiene derecho a votar.',
+                    'Todas las personas mayores votan.',
+                    'No se puede concluir nada.'
+                ],
+                correct: 1,
+                explanation: 'Es **Modus Ponens** ($P \rightarrow Q, P \vdash Q$). Se afirma que Carlos es mayor de edad ($P$), por lo tanto concluimos que tiene derecho a votar ($Q$).'
+            },
+            {
+                id: 2,
+                ruleType: 'Modus Tollens',
+                premise1: 'Si un animal es un mamífero, tiene glándulas mamarias.',
+                premise2: 'Este animal no tiene glándulas mamarias.',
+                options: [
+                    'Este animal es un mamífero.',
+                    'El animal es un ave.',
+                    'Este animal no es un mamífero.',
+                    'El animal es omnívoro.'
+                ],
+                correct: 2,
+                explanation: 'Es **Modus Tollens** ($P \rightarrow Q, \neg Q \vdash \neg P$). Se niega el consecuente ("no tiene glándulas mamarias"), por lo tanto concluimos la negación del antecedente ("no es un mamífero").'
+            },
+            {
+                id: 3,
+                ruleType: 'Modus Ponens',
+                premise1: 'Si presionas el pedal del freno, el automóvil reduce la velocidad.',
+                premise2: 'Presionas el pedal del freno.',
+                options: [
+                    'El automóvil reduce la velocidad.',
+                    'El automóvil no se detiene.',
+                    'El motor se apaga.',
+                    'El pedal está defectuoso.'
+                ],
+                correct: 0,
+                explanation: 'Es **Modus Ponens** ($P \rightarrow Q, P \vdash Q$). Afirmamos la acción del freno ($P$), deduciendo directamente la reducción de velocidad ($Q$).'
+            },
+            {
+                id: 4,
+                ruleType: 'Modus Tollens',
+                premise1: 'Si el motor está encendido, el indicador de aceite está iluminado.',
+                premise2: 'El indicador de aceite no está iluminado.',
+                options: [
+                    'El aceite se ha agotado.',
+                    'El motor está encendido.',
+                    'El coche necesita mantenimiento.',
+                    'El motor no está encendido.'
+                ],
+                correct: 3,
+                explanation: 'Es **Modus Tollens** ($P \rightarrow Q, \neg Q \vdash \neg P$). Se niega la señal iluminada ($\neg Q$), concluyendo que el motor no está encendido ($\neg P$).'
+            },
+            {
+                id: 5,
+                ruleType: 'Modus Ponens',
+                premise1: 'Si la temperatura baja de 0°C, el agua se congela.',
+                premise2: 'La temperatura ha bajado a -5°C (baja de 0°C).',
+                options: [
+                    'El agua se congela.',
+                    'El agua se evapora.',
+                    'El agua permanece líquida.',
+                    'No hay agua disponible.'
+                ],
+                correct: 0,
+                explanation: 'Es **Modus Ponens** ($P \rightarrow Q, P \vdash Q$). La condición del punto de congelación se cumple ($P$), deduciendo que el agua se congelará ($Q$).'
+            },
+            {
+                id: 6,
+                ruleType: 'Modus Tollens',
+                premise1: 'Si el servidor web está en funcionamiento, la página es accesible.',
+                premise2: 'La página web no es accesible.',
+                options: [
+                    'El servidor web está funcionando.',
+                    'El servidor web no está en funcionamiento.',
+                    'El dominio ha caducado.',
+                    'El usuario no tiene internet.'
+                ],
+                correct: 1,
+                explanation: 'Es **Modus Tollens** ($P \rightarrow Q, \neg Q \vdash \neg P$). La inaccesibilidad del sitio ($\neg Q$) implica lógicamente que el servidor no está en funcionamiento ($\neg P$).'
+            },
+            {
+                id: 7,
+                ruleType: 'Modus Ponens',
+                premise1: 'Si la alarma suena, hay un peligro potencial en el edificio.',
+                premise2: 'La alarma suena.',
+                options: [
+                    'Se trata de un simulacro.',
+                    'No hay ningún problema.',
+                    'Hay un peligro potencial en el edificio.',
+                    'El sistema de alarma falló.'
+                ],
+                correct: 2,
+                explanation: 'Es **Modus Ponens** ($P \rightarrow Q, P \vdash Q$). Al confirmarse la activación del sonido ($P$), concluimos que existe un peligro potencial ($Q$).'
+            },
+            {
+                id: 8,
+                ruleType: 'Modus Tollens',
+                premise1: 'Si una figura geométrica es un triángulo, la suma de sus ángulos internos es 180°.',
+                premise2: 'La suma de los ángulos internos de la figura X no es 180°.',
+                options: [
+                    'La figura X es un triángulo equilátero.',
+                    'La figura X es un cuadrado.',
+                    'La figura X no es un triángulo.',
+                    'La figura X es un círculo.'
+                ],
+                correct: 2,
+                explanation: 'Es **Modus Tollens** ($P \rightarrow Q, \neg Q \vdash \neg P$). La negación de la propiedad geométrica de los 180° ($\neg Q$) permite concluir con certeza que la figura no es un triángulo ($\neg P$).'
+            },
+            {
+                id: 9,
+                ruleType: 'Modus Ponens',
+                premise1: 'Si ingieres veneno de cobra, sufres un envenenamiento grave.',
+                premise2: 'Una persona ha ingerido veneno de cobra.',
+                options: [
+                    'La persona sufre un envenenamiento grave.',
+                    'La persona no tendrá síntomas.',
+                    'La cobra es inofensiva.',
+                    'No ocurrirá nada si toma agua.'
+                ],
+                correct: 0,
+                explanation: 'Es **Modus Ponens** ($P \rightarrow Q, P \vdash Q$). Se constata la ingesta del veneno ($P$), por lo que necesariamente se concluye el efecto de envenenamiento ($Q$).'
+            },
+            {
+                id: 10,
+                ruleType: 'Modus Tollens',
+                premise1: 'Si el paquete fue entregado hoy, recibiste una notificación en tu teléfono.',
+                premise2: 'No has recibido ninguna notificación en tu teléfono.',
+                options: [
+                    'El paquete está en camino.',
+                    'El paquete fue entregado hoy.',
+                    'Tu teléfono está apagado.',
+                    'El paquete no fue entregado hoy.'
+                ],
+                correct: 3,
+                explanation: 'Es **Modus Tollens** ($P \rightarrow Q, \neg Q \vdash \neg P$). Dado que no existe la notificación esperada ($\neg Q$), concluimos de forma deductiva que el paquete no se entregó hoy ($\neg P$).'
+            }
+        ];
+
+        // User State for Quiz Answers
+        let userAnswers = {};
+
+        // Render Resolved Examples
+        function renderExamples(filter = 'all') {
+            const container = document.getElementById('examples-container');
+            container.innerHTML = '';
+
+            const filtered = examplesData.filter(item => {
+                if (filter === 'all') return true;
+                return item.type === filter;
+            });
+
+            filtered.forEach((ex, index) => {
+                const isMP = ex.type === 'mp';
+                const badgeColor = isMP ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-rose-100 text-rose-800 border-rose-200';
+                const borderColor = isMP ? 'border-l-emerald-500' : 'border-l-rose-500';
+
+                const cardHtml = `
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 border-l-4 ${borderColor} card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-bold text-slate-900 text-lg">${ex.title}</h3>
+                                <span class="text-xs px-2.5 py-1 rounded-full border font-semibold ${badgeColor}">
+                                    ${ex.rule}
+                                </span>
+                            </div>
+
+                            <div class="space-y-2 mb-4 text-sm">
+                                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 font-mono text-xs">
+                                    <p class="text-slate-700"><strong>P1:</strong> ${ex.premise1}</p>
+                                    <p class="text-slate-700"><strong>P2:</strong> ${ex.premise2}</p>
+                                    <p class="font-bold ${isMP ? 'text-emerald-700' : 'text-rose-700'} mt-1 pt-1 border-t border-slate-200">
+                                        ${ex.conclusion}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600 border border-slate-100">
+                            <span class="font-semibold text-slate-800">Explicación:</span> ${ex.explanation}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        // Filter Examples handler
+        function filterExamples(type) {
+            // Update active styles for tabs
+            const btns = {
+                'all': document.getElementById('btn-ex-all'),
+                'mp': document.getElementById('btn-ex-mp'),
+                'mt': document.getElementById('btn-ex-mt')
+            };
+
+            Object.keys(btns).forEach(key => {
+                if (key === type) {
+                    btns[key].className = 'px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition shadow';
+                } else {
+                    btns[key].className = 'px-4 py-2 text-sm font-medium rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition';
+                }
+            });
+
+            renderExamples(type);
+        }
+
+        // Render Interactive Quiz
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const isAnswered = userAnswers[q.id] !== undefined;
+                const selectedIdx = userAnswers[q.id];
+                const isCorrect = selectedIdx === q.correct;
+
+                let optionsHtml = '';
+                q.options.forEach((opt, optIdx) => {
+                    let btnClass = 'bg-slate-800/80 border-slate-700 text-slate-200 hover:bg-slate-700 hover:border-slate-500';
+                    let iconHtml = '';
+
+                    if (isAnswered) {
+                        if (optIdx === q.correct) {
+                            btnClass = 'bg-emerald-950/80 border-emerald-500 text-emerald-200 font-semibold';
+                            iconHtml = '<i class="fa-solid fa-circle-check text-emerald-400 ml-auto"></i>';
+                        } else if (optIdx === selectedIdx && !isCorrect) {
+                            btnClass = 'bg-rose-950/80 border-rose-500 text-rose-200';
+                            iconHtml = '<i class="fa-solid fa-circle-xmark text-rose-400 ml-auto"></i>';
+                        } else {
+                            btnClass = 'bg-slate-800/30 border-slate-800 text-slate-500 cursor-not-allowed';
+                        }
+                    }
+
+                    optionsHtml += `
+                        <button 
+                            onclick="selectAnswer(${q.id}, ${optIdx})" 
+                            ${isAnswered ? 'disabled' : ''}
+                            class="w-full text-left p-3.5 rounded-xl border text-sm transition-all flex items-center justify-between ${btnClass}"
+                        >
+                            <span class="flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-slate-700/50 flex items-center justify-center text-xs font-mono font-bold mr-2 text-slate-300">
+                                    ${String.fromCharCode(65 + optIdx)}
+                                </span>
+                                ${opt}
+                            </span>
+                            ${iconHtml}
+                        </button>
+                    `;
+                });
+
+                let feedbackHtml = '';
+                if (isAnswered) {
+                    const alertBg = isCorrect ? 'bg-emerald-900/30 border-emerald-700/50 text-emerald-200' : 'bg-rose-900/30 border-rose-700/50 text-rose-200';
+                    const titleText = isCorrect ? '¡Correcto!' : 'Incorrecto';
+                    const icon = isCorrect ? 'fa-check-circle text-emerald-400' : 'fa-times-circle text-rose-400';
+
+                    feedbackHtml = `
+                        <div class="mt-4 p-4 rounded-xl border ${alertBg} text-xs leading-relaxed space-y-1 animate-fade-in">
+                            <div class="font-bold flex items-center gap-1.5 text-sm">
+                                <i class="fa-solid ${icon}"></i> ${titleText}
+                            </div>
+                            <p>${q.explanation}</p>
+                        </div>
+                    `;
+                }
+
+                const quizCard = `
+                    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-md">
+                        <div class="flex justify-between items-start mb-3 gap-2">
+                            <span class="text-xs font-mono text-indigo-400 font-semibold uppercase tracking-wider">Ejercicio ${idx + 1} de 10</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 font-medium">
+                                ${q.ruleType}
+                            </span>
+                        </div>
+
+                        <!-- Premises Box -->
+                        <div class="bg-slate-950/80 rounded-xl p-3.5 border border-slate-800/80 mb-4 font-mono text-xs sm:text-sm text-slate-300 space-y-1">
+                            <p><strong class="text-indigo-400">Premisa 1:</strong> ${q.premise1}</p>
+                            <p><strong class="text-indigo-400">Premisa 2:</strong> ${q.premise2}</p>
+                            <p class="text-slate-400 pt-1 border-t border-slate-800/60 font-sans italic text-xs">
+                                ¿Cuál es la conclusión lógica correcta?
+                            </p>
+                        </div>
+
+                        <!-- Options -->
+                        <div class="space-y-2.5">
+                            ${optionsHtml}
+                        </div>
+
+                        <!-- Feedback -->
+                        ${feedbackHtml}
+                    </div>
+                `;
+
+                container.innerHTML += quizCard;
+            });
+
+            updateScoreAndProgress();
+        }
+
+        // Handle selection of answer
+        function selectAnswer(questionId, optionIdx) {
+            if (userAnswers[questionId] !== undefined) return;
+            userAnswers[questionId] = optionIdx;
+            renderQuiz();
+        }
+
+        // Update score counter and progress bar
+        function updateScoreAndProgress() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            quizData.forEach(q => {
+                if (userAnswers[q.id] !== undefined) {
+                    answeredCount++;
+                    if (userAnswers[q.id] === q.correct) {
+                        correctCount++;
+                    }
+                }
+            });
+
+            // Update UI Score
+            document.getElementById('score-val').innerText = correctCount;
+            document.getElementById('quiz-progress-text').innerText = `Resueltos: ${answeredCount}/10`;
+            
+            const progressPercent = (answeredCount / 10) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+
+            if (answeredCount === 10) {
+                document.getElementById('quiz-feedback-banner').classList.remove('hidden');
+            } else {
+                document.getElementById('quiz-feedback-banner').classList.add('hidden');
+            }
+        }
+
+        // Reset Quiz
+        function resetQuiz() {
+            userAnswers = {};
+            renderQuiz();
+        }
+
+        // Smooth scroll helper
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Initialization
+        window.onload = function() {
+            renderExamples('all');
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>
